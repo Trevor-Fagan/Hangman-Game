@@ -4,7 +4,6 @@ Hangman::Hangman() : letters{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', '
 	// Init
 	wrong_guesses = 0;
 
-	string user_input = "";
 	getWord();
 
 	while (user_input != "exit") {
@@ -40,22 +39,30 @@ void Hangman::printMenu() {
 
 	switch (wrong_guesses) {
 	case 1:
-		lineOne = " |				 0";
+		lineOne = " |               0";
 		break;
 	case 2:
-		lineTwo = " |				 |";
+		lineOne = " |               0";
+		lineTwo = " |               |";
 		break;
 	case 3:
-		lineTwo = " |				/|";
+		lineOne = " |               0";
+		lineTwo = " |              /|";
 		break;
 	case 4:
-		lineTwo = " |				/|\\";
+		lineOne = " |               0";
+		lineTwo = " |              /|\\";
 		break;
 	case 5:
-		lineThree = " |				/";
+		lineOne = " |               0";
+		lineTwo = " |              /|\\";
+		lineThree = " |              /";
 		break;
 	case 6:
-		lineThree = " |				/ \\";
+		lineOne = " |               0";
+		lineTwo = " |              /|\\";
+		lineThree = " |              / \\";
+		gameOver();
 		break;
 	}
 
@@ -67,16 +74,6 @@ void Hangman::printMenu() {
 	cout << lineThree << endl;
 	cout << lineFour << endl;
 	cout << "========" << endl;
-
-	/*
-	==================
-	 |               |
-	 |				 0
-	 |				/|\
-	 |				/ \
-	 |	
-	 ========
-	*/
 }
 
 void Hangman::guessLetter(char guess) {
@@ -95,6 +92,7 @@ void Hangman::guessLetter(char guess) {
 	for (int i = 0; i < theWord.size(); i++) {
 		if (toupper(theWord[i]) == final_guess) {
 			placeHolderWord[i] = toupper(theWord[i]);
+			letterFound = true;
 		}
 	}
 
@@ -112,11 +110,36 @@ void Hangman::guessLetter(char guess) {
 	}
 
 	if (allTheSame) { // Restart the game
+		gameOver();
 		cout << "Completed!" << endl;
 	}
 }
 
-void Hangman::wrongGuess() {
+void Hangman::gameOver() {
+	char user_choice = ' ';
+
+	// Reset the alphabet array
+	for (int i = 0; i < 26; i++) {
+		letters[i] = i + 65;
+	}
+
+	if (wrong_guesses != 6) {
+		cout << "Congrats! The word was " << theWord << endl;
+	}
+	else {
+		cout << "Too many wwrong guesses. The correct word was " << theWord << endl;
+	}
+
+	// Handle the end of game
+	cout << "Would you like to start a new game (N) or exit (X)? ";
+	cin >> user_choice;
+
+	if (toupper(user_choice) == 'N') {
+		
+	}
+	else if (toupper(user_choice) == 'X') {
+		exit(1);
+	}
 
 }
 
